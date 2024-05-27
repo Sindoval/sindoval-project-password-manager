@@ -1,7 +1,12 @@
 .valid-password-check {
-  color: #aeffb6;
+  color: #11d825;
 }
 
 .invalid-password-check {
-  color: #f58989;
+  color: #ee1010;
+}
+
+body {
+  background-color: rgb(66, 65, 65);
+  color: white;
 }

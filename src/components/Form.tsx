@@ -40,6 +40,10 @@ export default function Form({ onClickNewSenha }: FormProps) {
     }
   };
 
+  const hasLetter = /[A-Za-z]/.test(inputPassword);
+  const hasNumber = /[0-9]/.test(inputPassword);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(inputPassword);
+
   return (
     <form action="">
       <label htmlFor="serviço">Nome do serviço</label>
@@ -70,6 +74,26 @@ export default function Form({ onClickNewSenha }: FormProps) {
       <input type="text" name="url" id="url" />
       <button disabled={ isDesabled }>Cadastrar</button>
       <button onClick={ () => onClickNewSenha() }>Cancelar</button>
+      { inputPassword.length < 8 ? (
+        <p className="invalid-password-check">Possuir 8 ou mais caracteres</p>
+      ) : (
+        <p className="valid-password-check">Possuir 8 ou mais caracteres</p>
+      ) }
+      { inputPassword.length > 16 ? (
+        <p className="invalid-password-check">Possuir até 16 caracteres</p>
+      ) : (
+        <p className="valid-password-check">Possuir até 16 caracteres</p>
+      ) }
+      { !hasLetter || !hasNumber ? (
+        <p className="invalid-password-check">Possuir letras e números</p>
+      ) : (
+        <p className="valid-password-check">Possuir letras e números</p>
+      )}
+      { !hasSpecialChar ? (
+        <p className="invalid-password-check">Possuir algum caractere especial</p>
+      ) : (
+        <p className="valid-password-check">Possuir algum caractere especial</p>
+      )}
     </form>
   );
 }
