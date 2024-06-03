@@ -11,6 +11,19 @@ body {
   color: white;
 }
 
+#main {
+  display: flex;
+}
+
+.container-service {
+  border-radius: 25px;
+  border: solid #f8f400;
+  text-align: center;
+  margin: 40px;
+  padding: 15px;
+  width: 15%;
+}
+
 a {
   color: #f8f400;
 }

@@ -9,8 +9,9 @@ export default function ServiceComp(prop: ServiceType) {
     }
     return urlInput;
   };
+
   return (
-    <div>
+    <>
       <p>
         <a href={ formatUrl(url) } target="_blank" rel="noopener noreferrer">
           {name}
@@ -18,6 +19,6 @@ export default function ServiceComp(prop: ServiceType) {
       </p>
       <p>{login}</p>
       <p>{password}</p>
-    </div>
+    </>
   );
 }

@@ -17,6 +17,24 @@ function App() {
     setListServices([...listServices, service]);
   };
 
+  /* const buttonRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const { target } = event;
+    const { id } = target;
+    const serviceFilter = listServices.filter((list) => list.name !== id);
+    setListServices(serviceFilter);
+  }; */
+
+  const handleDelete = (id: string) => {
+    const updatedServices = listServices.filter((service) => service.name !== id);
+    setListServices(updatedServices);
+  };
+
+  const buttonRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const target = event.target as HTMLButtonElement;
+    const { id } = target;
+    handleDelete(id);
+  };
+
   return (
     <div>
       <Title>Gerenciador de senhas</Title>
@@ -33,15 +51,25 @@ function App() {
       ) : (
         <br />
       )}
-      {listServices.map(({ name, login, password, url }) => (
-        <ServiceComp
-          key={ `${name}: ${login}` }
-          name={ name }
-          login={ login }
-          password={ password }
-          url={ url }
-        />
-      ))}
+      <main id="main">
+        {listServices.map(({ name, login, password, url }) => (
+          <div className="container-service" key={ `${name}: ${login}` }>
+            <ServiceComp
+              name={ name }
+              login={ login }
+              password={ password }
+              url={ url }
+            />
+            <button
+              data-testid="remove-btn"
+              id={ name }
+              onClick={ buttonRemove }
+            >
+              Excluir
+            </button>
+          </div>
+        ))}
+      </main>
     </div>
   );
 }
