@@ -1,99 +1,128 @@
 import React, { useState, useEffect } from 'react';
 import { passwordCheck } from '../utils/inputTests';
+import { ServiceType } from '../types/serviceType';
 
 interface FormProps {
-  onClickNewSenha: () => void;
+  onClickNewSenha: (param: React.MouseEvent<HTMLButtonElement>) => void;
+  newService: (param: ServiceType) => void;
 }
 
-export default function Form({ onClickNewSenha }: FormProps) {
+export default function Form({ onClickNewSenha, newService }: FormProps) {
   const [isDesabled, setIsDesabled] = useState(true);
-  const [inputName, setInputName] = useState('');
-  const [inputLogin, setInputLogin] = useState('');
-  const [inputPassword, setInputPassword] = useState('');
+  const [formInfo, setFormInfo] = useState({
+    name: '',
+    login: '',
+    password: '',
+    url: '',
+  });
 
   useEffect(() => {
     desabledButton();
-  }, [inputName, inputLogin, inputPassword]);
+  }, [formInfo]);
 
-  const handleName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    setInputName(target.value);
-  };
-
-  const handleLogin = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    setInputLogin(target.value);
-  };
-
-  const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { target } = event;
-    setInputPassword(target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormInfo({
+      ...formInfo,
+      [name]: value,
+    });
   };
 
   const desabledButton = () => {
-    const passwordInput = passwordCheck(inputPassword);
+    const passwordInput = passwordCheck(formInfo.password);
 
-    if (!passwordInput || inputLogin.length < 1 || inputName.length < 1) {
+    if (!passwordInput || formInfo.login.length < 1 || formInfo.name.length < 1) {
       setIsDesabled(true);
     } else {
       setIsDesabled(false);
     }
   };
 
-  const hasLetter = /[A-Za-z]/.test(inputPassword);
-  const hasNumber = /[0-9]/.test(inputPassword);
-  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(inputPassword);
+  const onClickCadastrar = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    newService(formInfo);
+    setFormInfo({
+      name: '',
+      login: '',
+      password: '',
+      url: '',
+    });
+    onClickNewSenha(event);
+  };
+
+  const hasLetter = /[A-Za-z]/.test(formInfo.password);
+  const hasNumber = /[0-9]/.test(formInfo.password);
+  const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(formInfo.password);
 
   return (
-    <form action="">
-      <label htmlFor="serviço">Nome do serviço</label>
-      <input
-        type="text"
-        name="serviço"
-        id="serviço"
-        value={ inputName }
-        onChange={ (e) => handleName(e) }
-      />
-      <label htmlFor="login">Login</label>
-      <input
-        type="text"
-        name="login"
-        id="login"
-        value={ inputLogin }
-        onChange={ (e) => handleLogin(e) }
-      />
-      <label htmlFor="password">Senha</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        value={ inputPassword }
-        onChange={ (e) => handlePassword(e) }
-      />
-      <label htmlFor="url">URL</label>
-      <input type="text" name="url" id="url" />
-      <button disabled={ isDesabled }>Cadastrar</button>
-      <button onClick={ () => onClickNewSenha() }>Cancelar</button>
-      { inputPassword.length < 8 ? (
-        <p className="invalid-password-check">Possuir 8 ou mais caracteres</p>
-      ) : (
-        <p className="valid-password-check">Possuir 8 ou mais caracteres</p>
-      ) }
-      { inputPassword.length > 16 ? (
-        <p className="invalid-password-check">Possuir até 16 caracteres</p>
-      ) : (
-        <p className="valid-password-check">Possuir até 16 caracteres</p>
-      ) }
-      { !hasLetter || !hasNumber ? (
-        <p className="invalid-password-check">Possuir letras e números</p>
-      ) : (
-        <p className="valid-password-check">Possuir letras e números</p>
-      )}
-      { !hasSpecialChar ? (
-        <p className="invalid-password-check">Possuir algum caractere especial</p>
-      ) : (
-        <p className="valid-password-check">Possuir algum caractere especial</p>
-      )}
-    </form>
+    <div>
+      <form action="">
+        <label htmlFor="serviço">Nome do serviço</label>
+        <input
+          type="text"
+          name="name"
+          id="serviço"
+          value={ formInfo.name }
+          onChange={ handleChange }
+        />
+        <label htmlFor="login">Login</label>
+        <input
+          type="text"
+          name="login"
+          id="login"
+          value={ formInfo.login }
+          onChange={ handleChange }
+        />
+        <label htmlFor="password">Senha</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          value={ formInfo.password }
+          onChange={ handleChange }
+        />
+        <label htmlFor="url">URL</label>
+        <input
+          type="text"
+          name="url"
+          id="url"
+          value={ formInfo.url }
+          onChange={ handleChange }
+        />
+        <button
+          disabled={ isDesabled }
+          onClick={ (e) => onClickCadastrar(e) }
+        >
+          Cadastrar
+        </button>
+
+        <button
+          onClick={ (e) => onClickNewSenha(e) }
+        >
+          Cancelar
+        </button>
+
+        { formInfo.password.length < 8 ? (
+          <p className="invalid-password-check">Possuir 8 ou mais caracteres</p>
+        ) : (
+          <p className="valid-password-check">Possuir 8 ou mais caracteres</p>
+        ) }
+        { formInfo.password.length > 16 ? (
+          <p className="invalid-password-check">Possuir até 16 caracteres</p>
+        ) : (
+          <p className="valid-password-check">Possuir até 16 caracteres</p>
+        ) }
+        { !hasLetter || !hasNumber ? (
+          <p className="invalid-password-check">Possuir letras e números</p>
+        ) : (
+          <p className="valid-password-check">Possuir letras e números</p>
+        )}
+        { !hasSpecialChar ? (
+          <p className="invalid-password-check">Possuir algum caractere especial</p>
+        ) : (
+          <p className="valid-password-check">Possuir algum caractere especial</p>
+        )}
+      </form>
+    </div>
   );
 }

@@ -10,3 +10,7 @@ body {
   background-color: rgb(66, 65, 65);
   color: white;
 }
+
+a {
+  color: #f8f400;
+}
