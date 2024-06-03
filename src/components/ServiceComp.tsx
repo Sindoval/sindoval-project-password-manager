@@ -10,15 +10,6 @@ export default function ServiceComp(prop: ServiceCheckedType) {
     return urlInput;
   };
 
-  const passwordCheck = (string: string): string => {
-    const tamanho = string.length;
-    let senha = '';
-    for (let i = 0; i < tamanho; i += 1) {
-      senha += '*';
-    }
-    return senha;
-  };
-
   return (
     <>
       <p>
