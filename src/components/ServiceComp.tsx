@@ -1,13 +1,22 @@
-import { ServiceType } from '../types/serviceType';
+import { ServiceCheckedType } from '../types/serviceType';
 
-export default function ServiceComp(prop: ServiceType) {
-  const { name, login, password, url } = prop;
+export default function ServiceComp(prop: ServiceCheckedType) {
+  const { name, login, password, url, checked } = prop;
 
   const formatUrl = (urlInput: string): string => {
     if (!/^https?:\/\//i.test(urlInput)) {
       return `http://${urlInput}`;
     }
     return urlInput;
+  };
+
+  const passwordCheck = (string: string): string => {
+    const tamanho = string.length;
+    let senha = '';
+    for (let i = 0; i < tamanho; i += 1) {
+      senha += '*';
+    }
+    return senha;
   };
 
   return (
@@ -18,7 +27,11 @@ export default function ServiceComp(prop: ServiceType) {
         </a>
       </p>
       <p>{login}</p>
-      <p>{password}</p>
+      {checked ? (
+        <p>******</p>
+      ) : (
+        <p>{password}</p>
+      )}
     </>
   );
 }

@@ -27,3 +27,7 @@ body {
 a {
   color: #f8f400;
 }
+
+button {
+  margin: 10px;
+}

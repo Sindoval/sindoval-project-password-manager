@@ -8,6 +8,8 @@ import ServiceComp from './components/ServiceComp';
 function App() {
   const [renderForm, setRenderForm] = useState(true);
   const [listServices, setListServices] = useState<ServiceType[]>([]);
+  const [checkedInput, setCheckedInput] = useState(false);
+
   const onClickNewSenha = (event: React.MouseEvent<HTMLButtonElement>): void => {
     event.preventDefault();
     setRenderForm(!renderForm);
@@ -16,13 +18,6 @@ function App() {
   const addNewService = (service: ServiceType): void => {
     setListServices([...listServices, service]);
   };
-
-  /* const buttonRemove = (event: React.MouseEvent<HTMLButtonElement>) => {
-    const { target } = event;
-    const { id } = target;
-    const serviceFilter = listServices.filter((list) => list.name !== id);
-    setListServices(serviceFilter);
-  }; */
 
   const handleDelete = (id: string) => {
     const updatedServices = listServices.filter((service) => service.name !== id);
@@ -35,11 +30,21 @@ function App() {
     handleDelete(id);
   };
 
+  const handleChecked = () => {
+    setCheckedInput(!checkedInput);
+  };
+
   return (
     <div>
       <Title>Gerenciador de senhas</Title>
       { renderForm ? (
-        <button onClick={ onClickNewSenha }>Cadastrar nova senha</button>
+        <>
+          <button onClick={ onClickNewSenha }>Cadastrar nova senha</button>
+          <label htmlFor="checked">
+            Esconder senhas
+            <input type="checkbox" id="checked" onChange={ handleChecked } />
+          </label>
+        </>
       ) : (
         <Form onClickNewSenha={ onClickNewSenha } newService={ addNewService } />
       )}
@@ -59,6 +64,7 @@ function App() {
               login={ login }
               password={ password }
               url={ url }
+              checked={ checkedInput }
             />
             <button
               data-testid="remove-btn"
