@@ -55,7 +55,7 @@ export default function Form({ onClickNewSenha, newService }: FormProps) {
   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/.test(formInfo.password);
 
   return (
-    <div>
+    <div id="form-container">
       <form action="">
         <label htmlFor="serviço">Nome do serviço</label>
         <input
@@ -90,18 +90,23 @@ export default function Form({ onClickNewSenha, newService }: FormProps) {
           onChange={ handleChange }
         />
         <button
+          type="button"
           disabled={ isDesabled }
           onClick={ (e) => onClickCadastrar(e) }
+          className="btn btn-primary"
         >
           Cadastrar
         </button>
 
         <button
+          type="button"
           onClick={ (e) => onClickNewSenha(e) }
+          className="btn btn-primary"
         >
           Cancelar
         </button>
-
+      </form>
+      <div id="message-container">
         { formInfo.password.length < 8 ? (
           <p className="invalid-password-check">Possuir 8 ou mais caracteres</p>
         ) : (
@@ -122,7 +127,7 @@ export default function Form({ onClickNewSenha, newService }: FormProps) {
         ) : (
           <p className="valid-password-check">Possuir algum caractere especial</p>
         )}
-      </form>
+      </div>
     </div>
   );
 }

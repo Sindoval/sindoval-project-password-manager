@@ -36,26 +36,47 @@ function App() {
 
   return (
     <div>
-      <Title>Gerenciador de senhas</Title>
-      { renderForm ? (
-        <>
-          <button onClick={ onClickNewSenha }>Cadastrar nova senha</button>
-          <label htmlFor="checked">
-            Esconder senhas
-            <input type="checkbox" id="checked" onChange={ handleChecked } />
-          </label>
-        </>
-      ) : (
-        <Form onClickNewSenha={ onClickNewSenha } newService={ addNewService } />
-      )}
-      {listServices.length === 0 ? (
-        <div>
+      <header>
+        <Title>Gerenciador de senhas</Title>
+        { renderForm ? (
+          <>
+            <button
+              type="button"
+              onClick={ onClickNewSenha }
+              className="btn btn-primary"
+            >
+              Cadastrar nova senha
+            </button>
+            <div className="form-check form-switch">
+              <label className="form-check-label" htmlFor="flexSwitchCheckDefault">
+                Esconder senhas
+                <input
+                  className="form-check-input"
+                  role="switch"
+                  type="checkbox"
+                  id="flexSwitchCheckDefault"
+                  checked={ checkedInput }
+                  onChange={ handleChecked }
+                />
+              </label>
+            </div>
+          </>
+        ) : (
+          <>
+            <Form onClickNewSenha={ onClickNewSenha } newService={ addNewService } />
+            <hr />
+          </>
+        )}
+        {listServices.length === 0 ? (
+          <div>
+            <br />
+            <hr />
+            <h3>Nenhuma senha cadastrada</h3>
+          </div>
+        ) : (
           <br />
-          <h3>Nenhuma senha cadastrada</h3>
-        </div>
-      ) : (
-        <br />
-      )}
+        )}
+      </header>
       <main id="main">
         {listServices.map(({ name, login, password, url }) => (
           <div className="container-service" key={ `${name}: ${login}` }>
@@ -70,6 +91,7 @@ function App() {
               data-testid="remove-btn"
               id={ name }
               onClick={ buttonRemove }
+              className="btn btn-danger"
             >
               Excluir
             </button>
